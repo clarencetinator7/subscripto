@@ -1,20 +1,25 @@
 import { useState } from "react";
 import "./App.css";
+import { useSubscriptionStore } from "./store/subscriptionStore";
 import type { BillingCycle } from "./types/Subscription";
+import SubscriptionList from "./components/subscription/SubscriptionList";
 
 function App() {
   const [nameField, setNameField] = useState<string>("");
   const [costField, setCostField] = useState<number>(0);
   const [cycleField, setCycleField] = useState<BillingCycle>("Monthly");
+  const addSubscription = useSubscriptionStore(
+    (state) => state.addSubscription,
+  );
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Handle form submission logic here
-    console.log({
+    addSubscription({
       Name: nameField,
       Cost: costField,
       Cycle: cycleField,
+      VisualIdentifier: "",
     });
   };
 
@@ -42,6 +47,7 @@ function App() {
           <option value="Yearly">Yearly</option>
         </select>
         <button type="submit">Add Subscription</button>
+        <SubscriptionList />
       </form>
     </>
   );
