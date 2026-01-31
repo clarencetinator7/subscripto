@@ -3,10 +3,14 @@ import AddSubscriptionDialog from "./components/SubscriptionForm/AddSubscription
 
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-extrabold mb-5 text-primary">Subscripto</h1>
+    <div className="max-w-2xl mx-auto">
+      <header className="flex">
+        <h1 className="text-3xl font-extrabold mb-5 text-primary">
+          Subscripto
+        </h1>
+      </header>
       <AddSubscriptionDialog />
-    </>
+    </div>
   );
 }
 

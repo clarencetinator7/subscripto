@@ -28,8 +28,8 @@ const AddSubscriptionDialog = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader className="p-5">
-            <DialogTitle>
-              <h2 className="text-2xl font-bold">Add Subscription</h2>
+            <DialogTitle className="text-2xl font-bold text-primary">
+              Add Subscription
             </DialogTitle>
           </DialogHeader>
           <SubscriptionForm />
@@ -44,8 +44,8 @@ const AddSubscriptionDialog = () => {
         <AddSubscriptionButton />
       </DrawerTrigger>
       <DrawerContent>
-        <DrawerTitle className="p-5">
-          <h2 className="text-2xl font-bold">Add Subscription</h2>
+        <DrawerTitle className="p-5 text-2xl font-bold text-primary">
+          Add Subscription
         </DrawerTitle>
         <SubscriptionForm />
       </DrawerContent>
