@@ -63,15 +63,17 @@ export const buildSubscriptionData = (
   );
 
   // 4. Compute percentage of total monthly cost for each subscription
-  const finalItems = computedSubscriptions.map((sub) => {
-    return {
-      ...sub,
-      PercentageOfTotalMonthlyCost: buildPercentageOfTotalMonthlyCost(
-        sub as SubscriptionMetrics,
-        totalMonthlyCost,
-      ),
-    };
-  });
+  const finalItems = computedSubscriptions
+    .map((sub) => {
+      return {
+        ...sub,
+        PercentageOfTotalMonthlyCost: buildPercentageOfTotalMonthlyCost(
+          sub as SubscriptionMetrics,
+          totalMonthlyCost,
+        ),
+      };
+    })
+    .sort((a, b) => b.MonthlyCost - a.MonthlyCost);
 
   // 5. Put it all together
   return {

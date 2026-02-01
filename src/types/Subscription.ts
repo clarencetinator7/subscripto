@@ -13,10 +13,6 @@ export type SubscriptionMetrics = Subscription & {
   MonthlyCost: number;
   YearlyCost: number;
   MonthlyRatio: number;
-  // GridSpan: {
-  //   columns: number;
-  //   rows: number;
-  // };
 };
 
 export type SubscriptionStats = {

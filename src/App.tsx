@@ -1,6 +1,7 @@
 import "./App.css";
 import SubscriptionList from "./components/Subscription/SubscriptionList";
 import SubscriptionFormDialog from "./components/SubscriptionForm/SubscriptionFormDialog";
+import TreeMapRoot from "./components/TreeMap/TreeMapRoot";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
           Subscripto
         </h1>
       </header>
+      <TreeMapRoot />
       <SubscriptionFormDialog isEditMode={false} />
       <SubscriptionList />
     </div>
