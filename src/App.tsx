@@ -1,6 +1,6 @@
 import "./App.css";
 import SubscriptionList from "./components/Subscription/SubscriptionList";
-import AddSubscriptionDialog from "./components/SubscriptionForm/AddSubscriptionDialog";
+import SubscriptionFormDialog from "./components/SubscriptionForm/SubscriptionFormDialog";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
           Subscripto
         </h1>
       </header>
-      <AddSubscriptionDialog />
+      <SubscriptionFormDialog isEditMode={false} />
       <SubscriptionList />
     </div>
   );

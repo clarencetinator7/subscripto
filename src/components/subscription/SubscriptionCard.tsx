@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { LuTrash2, LuPencil } from "react-icons/lu";
 import { DEFAULT_UNIT } from "@/const/constants";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
+import SubscriptionFormDialog from "../SubscriptionForm/SubscriptionFormDialog";
 
 type SubscriptionCardProps = {
   subscription: Subscription;
@@ -16,7 +17,7 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
   return (
     <div className="p-5 flex flex-row items-center justify-between bg-white shadow rounded-xl cursor-pointer">
       <div className="flex flex-row gap-3 items-center">
-        <div className="w-10 h-10 flex items-center justify-center">
+        <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-clip">
           <img
             src={subscription.VisualIdentifier}
             alt={subscription.Name}
@@ -40,13 +41,19 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
         >
           <LuTrash2 />
         </Button>
-        <Button
-          variant={"ghost"}
-          size="sm"
-          className="text-gray-300 hover:text-primary cursor-pointer"
-        >
-          <LuPencil />
-        </Button>
+        <SubscriptionFormDialog
+          isEditMode={true}
+          subscriptionId={subscription.Id}
+          triggerElement={
+            <Button
+              variant={"ghost"}
+              size="sm"
+              className="text-gray-300 hover:text-primary cursor-pointer"
+            >
+              <LuPencil />
+            </Button>
+          }
+        />
       </div>
     </div>
   );

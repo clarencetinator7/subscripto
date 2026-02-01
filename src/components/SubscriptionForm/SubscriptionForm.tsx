@@ -14,10 +14,38 @@ import type { Subscription } from "@/types/Subscription";
 import { LuGlobe } from "react-icons/lu";
 import { DEFAULT_UNIT } from "@/const/constants";
 
-const SubscriptionForm = () => {
+type SubscriptionFormProps =
+  | {
+      editMode: true;
+      subscription: Subscription;
+    }
+  | {
+      editMode?: false;
+    };
+
+const SubscriptionForm = (props: SubscriptionFormProps) => {
   const addSubscription = useSubscriptionStore(
     (state) => state.addSubscription,
   );
+  const editSubscription = useSubscriptionStore(
+    (state) => state.editSubscription,
+  );
+
+  const defaultValues: Partial<Subscription> = props.editMode
+    ? {
+        Website: props.subscription.Website,
+        Name: props.subscription.Name,
+        Cost: props.subscription.Cost,
+        Cycle: props.subscription.Cycle,
+        VisualIdentifier: props.subscription.VisualIdentifier,
+      }
+    : {
+        Website: "",
+        Name: "",
+        Cost: 0,
+        Cycle: "Monthly",
+        VisualIdentifier: "",
+      };
 
   const {
     register,
@@ -27,15 +55,7 @@ const SubscriptionForm = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<Subscription>({
-    defaultValues: {
-      Website: "",
-      Name: "",
-      Cost: 0,
-      Cycle: "Monthly",
-      VisualIdentifier: "",
-    },
-  });
+  } = useForm<Subscription>({ defaultValues: defaultValues });
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const website = watch("Website");
@@ -68,6 +88,11 @@ const SubscriptionForm = () => {
   }, [website, setValue]);
 
   const onSubmit = (data: Subscription) => {
+    if (props.editMode) {
+      editSubscription(props.subscription.Id, data);
+      return;
+    }
+
     addSubscription(data);
     reset();
   };
@@ -155,7 +180,7 @@ const SubscriptionForm = () => {
         type="submit"
         className="font-semibold bg-primary text-white py-3 my-5 rounded-xl"
       >
-        Save Subscription
+        {props.editMode ? "Save Changes" : "Save Subscription"}
       </button>
     </form>
   );

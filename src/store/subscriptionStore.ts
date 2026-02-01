@@ -4,20 +4,42 @@ import { persist } from "zustand/middleware";
 
 type SubscriptionStore = {
   subscriptions: Subscription[];
+  getSubscriptionById: (id: string) => Subscription | undefined;
   addSubscription: (newSubscription: Subscription) => void;
+  editSubscription: (
+    id: string,
+    updatedSubscription: Partial<Subscription>,
+  ) => void;
   deleteSubscription: (id: string) => void;
 };
 
 export const useSubscriptionStore = create<SubscriptionStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       subscriptions: [],
+      getSubscriptionById: (id: string) => {
+        return get().subscriptions.find(
+          (subscription) => subscription.Id === id,
+        );
+      },
       addSubscription: (newSubscription: Subscription) => {
         // Generate ID
         newSubscription.Id = crypto.randomUUID();
 
         set((state) => ({
           subscriptions: [...state.subscriptions, newSubscription],
+        }));
+      },
+      editSubscription: (
+        id: string,
+        updatedSubscription: Partial<Subscription>,
+      ) => {
+        set((state) => ({
+          subscriptions: state.subscriptions.map((subscription) =>
+            subscription.Id === id
+              ? { ...subscription, ...updatedSubscription }
+              : subscription,
+          ),
         }));
       },
       deleteSubscription: (id: string) => {

@@ -15,24 +15,56 @@ import {
 } from "../ui/drawer";
 import SubscriptionForm from "./SubscriptionForm";
 import { forwardRef, useState, type ComponentProps } from "react";
+import { useSubscriptionStore } from "@/store/subscriptionStore";
 
-const AddSubscriptionDialog = () => {
+type SubscriptionFormDialogProps =
+  | {
+      isEditMode: false;
+    }
+  | {
+      isEditMode: true;
+      subscriptionId: string;
+      triggerElement: React.ReactNode;
+    };
+
+const SubscriptionFormDialog = (props: SubscriptionFormDialogProps) => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+
+  const getSubscriptionById = useSubscriptionStore(
+    (state) => state.getSubscriptionById,
+  );
+
+  const trigger = props.isEditMode ? (
+    props.triggerElement
+  ) : (
+    <AddSubscriptionButton />
+  );
+
+  const subscription =
+    props.isEditMode && open ? getSubscriptionById(props.subscriptionId) : null;
+
+  const formTitle =
+    props.isEditMode && open ? "Edit Subscription" : "Add Subscription";
+
+  const subscriptionForm =
+    props.isEditMode && open ? (
+      <SubscriptionForm editMode={true} subscription={subscription!} />
+    ) : (
+      <SubscriptionForm />
+    );
 
   if (!isMobile) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <AddSubscriptionButton />
-        </DialogTrigger>
-        <DialogContent>
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader className="p-5">
             <DialogTitle className="text-2xl font-bold text-primary">
-              Add Subscription
+              {formTitle}
             </DialogTitle>
           </DialogHeader>
-          <SubscriptionForm />
+          {subscriptionForm}
         </DialogContent>
       </Dialog>
     );
@@ -40,20 +72,18 @@ const AddSubscriptionDialog = () => {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <AddSubscriptionButton />
-      </DrawerTrigger>
-      <DrawerContent>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerContent aria-describedby={undefined}>
         <DrawerTitle className="p-5 text-2xl font-bold text-primary">
           Add Subscription
         </DrawerTitle>
-        <SubscriptionForm />
+        {subscriptionForm}
       </DrawerContent>
     </Drawer>
   );
 };
 
-export default AddSubscriptionDialog;
+export default SubscriptionFormDialog;
 
 const AddSubscriptionButton = forwardRef<
   HTMLButtonElement,
