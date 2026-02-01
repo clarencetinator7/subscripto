@@ -67,7 +67,7 @@ export const buildSubscriptionData = (
     .map((sub) => {
       return {
         ...sub,
-        PercentageOfTotalMonthlyCost: buildPercentageOfTotalMonthlyCost(
+        MonthlyRatio: buildPercentageOfTotalMonthlyCost(
           sub as SubscriptionMetrics,
           totalMonthlyCost,
         ),

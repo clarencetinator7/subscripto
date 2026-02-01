@@ -2,6 +2,7 @@ import { useSubscriptionStore } from "@/store/subscriptionStore";
 import { computeTreemapData } from "@/utils/d3TreeMap";
 import { buildSubscriptionData } from "@/utils/subscriptionSelector";
 import { useEffect, useRef, useState } from "react";
+import TreeMapTile from "./TreeMapTile";
 
 const MAX_WIDTH = 671;
 const MIN_WIDTH = 500;
@@ -17,6 +18,9 @@ const TreeMapRoot = () => {
     containerWidth,
     HEIGHT,
   );
+
+  console.log(subscriptionStats);
+  console.log(treeMapNodes);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -45,19 +49,7 @@ const TreeMapRoot = () => {
         }}
       >
         {treeMapNodes.map((node, index) => (
-          <div
-            key={index}
-            className={`flex items-center justify-center absolute bg-blue-200 shadow rounded-xl`}
-            style={{
-              left: node.x,
-              top: node.y,
-              width: node.width,
-              height: node.height,
-              backgroundColor: node.color,
-            }}
-          >
-            {node.data.Name}
-          </div>
+          <TreeMapTile key={index} node={node} />
         ))}
       </div>
     </div>

@@ -5,7 +5,7 @@ import type {
 } from "@/types/Subscription";
 import { hierarchy, treemap, type HierarchyNode } from "d3-hierarchy";
 
-type SubscriptionNode = SubscriptionMetrics & { value: number };
+export type SubscriptionNode = SubscriptionMetrics & { value: number };
 type TreeNode = {
   children?: SubscriptionNode[];
 };
