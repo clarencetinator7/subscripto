@@ -1,6 +1,6 @@
 import { FaGithub } from "react-icons/fa";
 import "./App.css";
-import SubscriptionList from "./components/SubscriptionTemp/SubscriptionList";
+import SubscriptionList from "./components/Subscription/SubscriptionList";
 import SubscriptionFormDialog from "./components/SubscriptionForm/SubscriptionFormDialog";
 import TreeMapRoot from "./components/TreeMap/TreeMapRoot";
 import { Button } from "./components/ui/button";
