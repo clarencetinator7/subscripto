@@ -1,75 +1,135 @@
-# React + TypeScript + Vite
+# Subscripto
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, interactive web application for managing and visualizing your subscriptions using an interactive **treemap layout**
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📊 **Interactive Treemap Visualization** - Visualize all your subscriptions at a glance with D3-powered treemap charts
+- ➕ **Add & Edit Subscriptions** - Easily add new subscriptions or edit existing ones through a clean dialog interface
+- 💰 **Cost Tracking** - Monitor both monthly and yearly costs automatically calculated based on billing cycle
+- 📱 **Responsive Design** - Fully responsive interface that works seamlessly on desktop and mobile devices
+- 📈 **Subscription Metrics** - Get detailed statistics including total costs and average spending per subscription
+- 🔄 **State Management** - Persistent state management with Zustand for smooth user experience
 
-## React Compiler
+## Tech Stack
+
+- **Frontend Framework**: React 19
+- **Styling**: Tailwind CSS
+- **UI Components**: Shadcn UI
+- **Form Handling**: React Hook Form
+- **State Management**: Zustand
+- **Visualization**: D3.js (d3-hierarchy)
+
+## Project Structure
+
+```
+src/
+├── components/           # React components
+│   ├── Subscription/    # Subscription display components
+│   ├── SubscriptionForm/ # Form for adding/editing subscriptions
+│   ├── TreeMap/         # D3 treemap visualization
+│   └── ui/              # Reusable UI components
+├── store/               # Zustand state management
+├── types/               # TypeScript type definitions
+├── hooks/               # Custom React hooks
+├── utils/               # Utility functions
+├── const/               # Application constants
+└── lib/                 # Library functions and helpers
+```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd subscripto
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Start the development server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+### React Compiler
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
 
-Note: This will impact Vite dev & build performances.
+Note: This will impact Vite dev & build performances
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Adding a Subscription
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+1. Click the "Add Subscription" button
+2. Fill in the subscription details:
+   - **Name**: The name of the service
+   - **Cost**: The amount you pay
+   - **Billing Cycle**: Select Monthly or Yearly
+   - **Website** (optional): The service's website
+   - **Visual Identifier**: Automatically fetched using google's favicon api
+3. Click Save
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+<!-- ### Viewing Subscriptions
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **Treemap View**: Visual representation showing all subscriptions proportional to their monthly cost
+- **List View**: Detailed list of all subscriptions with full information
+- **Statistics**: View total monthly and yearly costs, plus average spending -->
+
+### Editing a Subscription
+
+1. Click the Edit button on any subscription
+2. Update the details
+3. Click Save
+
+### Deleting a Subscription
+
+1. Click the Delete button on any subscription
+2. Confirm the deletion
+
+## Data Model
+
+### Subscription Type
+
+```typescript
+type Subscription = {
+  Id: string;
+  Website?: string;
+  Name: string;
+  Cost: number;
+  Cycle: BillingCycle;
+  VisualIdentifier: string;
+};
+
+type BillingCycle = "Monthly" | "Yearly";
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Subscription Metrics
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Automatically calculated for each subscription:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Monthly Cost
+- Yearly Cost
+- Monthly Ratio (proportion of total monthly cost)
+
+## Future Enhancements
+
+- 📤 Export data to CSV/PDF
+- 📈 More detailed dashboard
+- 🏷️ Categories and Tag
