@@ -24,10 +24,13 @@ export const useSubscriptionStore = create<SubscriptionStore>()(
       },
       addSubscription: (newSubscription: Subscription) => {
         // Generate ID
-        newSubscription.Id = crypto.randomUUID();
+        const subscriptionWithId = {
+          ...newSubscription,
+          Id: crypto.randomUUID(),
+        };
 
         set((state) => ({
-          subscriptions: [...state.subscriptions, newSubscription],
+          subscriptions: [...state.subscriptions, subscriptionWithId],
         }));
       },
       editSubscription: (

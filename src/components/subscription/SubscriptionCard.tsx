@@ -15,7 +15,7 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
   );
 
   return (
-    <div className="p-5 flex flex-row items-center justify-between bg-white shadow rounded-xl cursor-pointer">
+    <div className="p-5 flex flex-row items-center justify-between bg-white shadow rounded-xl cursor-pointer hover:shadow-md transition-shadow">
       <div className="flex flex-row gap-3 items-center">
         <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-clip">
           <img

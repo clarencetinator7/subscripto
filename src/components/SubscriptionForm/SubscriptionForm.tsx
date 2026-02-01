@@ -149,7 +149,7 @@ const SubscriptionForm = (props: SubscriptionFormProps) => {
               {...register("Cost", {
                 required: "Cost is required",
                 valueAsNumber: true,
-                min: { value: 0, message: "Cost must be positive" },
+                min: { value: 1, message: "Cost must be more than 0" },
               })}
             />
             {errors.Cost && <FieldError>{errors.Cost.message}</FieldError>}
