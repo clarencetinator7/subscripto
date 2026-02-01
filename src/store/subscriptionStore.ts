@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 type SubscriptionStore = {
   subscriptions: Subscription[];
   addSubscription: (newSubscription: Subscription) => void;
+  deleteSubscription: (id: string) => void;
 };
 
 export const useSubscriptionStore = create<SubscriptionStore>()(
@@ -12,8 +13,18 @@ export const useSubscriptionStore = create<SubscriptionStore>()(
     (set) => ({
       subscriptions: [],
       addSubscription: (newSubscription: Subscription) => {
+        // Generate ID
+        newSubscription.Id = crypto.randomUUID();
+
         set((state) => ({
           subscriptions: [...state.subscriptions, newSubscription],
+        }));
+      },
+      deleteSubscription: (id: string) => {
+        set((state) => ({
+          subscriptions: state.subscriptions.filter(
+            (subscription) => subscription.Id !== id,
+          ),
         }));
       },
     }),

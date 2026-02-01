@@ -2,15 +2,19 @@ import type { Subscription } from "@/types/Subscription";
 import { Button } from "../ui/button";
 import { LuTrash2, LuPencil } from "react-icons/lu";
 import { DEFAULT_UNIT } from "@/const/constants";
+import { useSubscriptionStore } from "@/store/subscriptionStore";
 
 type SubscriptionCardProps = {
   subscription: Subscription;
 };
 
 const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
+  const deleteSubscription = useSubscriptionStore(
+    (state) => state.deleteSubscription,
+  );
+
   return (
     <div className="p-5 flex flex-row items-center justify-between bg-white shadow rounded-xl cursor-pointer">
-      {/* <p>Name: {subscription.Name}</p> */}
       <div className="flex flex-row gap-3 items-center">
         <div className="w-10 h-10 flex items-center justify-center">
           <img
@@ -32,6 +36,7 @@ const SubscriptionCard = ({ subscription }: SubscriptionCardProps) => {
           variant={"ghost"}
           size="sm"
           className="text-gray-300 hover:text-red-400 cursor-pointer"
+          onClick={() => deleteSubscription(subscription.Id)}
         >
           <LuTrash2 />
         </Button>

@@ -1,4 +1,5 @@
 export type Subscription = {
+  Id: string;
   Website?: string;
   Name: string;
   Cost: number;
