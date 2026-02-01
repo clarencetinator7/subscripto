@@ -12,6 +12,7 @@ import {
 import { useSubscriptionStore } from "@/store/subscriptionStore";
 import type { Subscription } from "@/types/Subscription";
 import { LuGlobe } from "react-icons/lu";
+import { DEFAULT_UNIT } from "@/const/constants";
 
 const SubscriptionForm = () => {
   const addSubscription = useSubscriptionStore(
@@ -114,7 +115,7 @@ const SubscriptionForm = () => {
         </Field>
         <div className="flex gap-3">
           <Field className="field-wrapper">
-            <FieldLabel className="field-label">Cost</FieldLabel>
+            <FieldLabel className="field-label">{`Cost (${DEFAULT_UNIT.Name} - ${DEFAULT_UNIT.Symbol})`}</FieldLabel>
             <Input
               type="number"
               placeholder="3.00"

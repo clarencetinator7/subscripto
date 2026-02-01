@@ -1,4 +1,5 @@
 import "./App.css";
+import SubscriptionList from "./components/Subscription/SubscriptionList";
 import AddSubscriptionDialog from "./components/SubscriptionForm/AddSubscriptionDialog";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
         </h1>
       </header>
       <AddSubscriptionDialog />
+      <SubscriptionList />
     </div>
   );
 }

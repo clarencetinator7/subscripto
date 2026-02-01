@@ -1,15 +1,12 @@
 import { useSubscriptionStore } from "@/store/subscriptionStore";
+import SubscriptionCard from "./SubscriptionCard";
 
 const SubscriptionList = () => {
   const subscriptions = useSubscriptionStore((state) => state.subscriptions);
   return (
-    <div>
+    <div className="my-5 flex flex-col gap-2">
       {subscriptions.map((sub, index) => (
-        <div key={index} className="border p-2 my-2">
-          <p>Name: {sub.Name}</p>
-          <p>Cost: ${sub.Cost}</p>
-          <p>Cycle: {sub.Cycle}</p>
-        </div>
+        <SubscriptionCard key={index} subscription={sub} />
       ))}
     </div>
   );
