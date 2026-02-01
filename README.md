@@ -2,6 +2,10 @@
 
 A modern, interactive web application for managing and visualizing your subscriptions using an interactive **treemap layout**
 
+- Each rectangle represents a subscription
+- The area of each rectangle corresponds to its monthly cost
+- This allows users to instantly identify which subscriptions contribute most to their expenses
+
 ## Features
 
 - 📊 **Interactive Treemap Visualization** - Visualize all your subscriptions at a glance with D3-powered treemap charts
