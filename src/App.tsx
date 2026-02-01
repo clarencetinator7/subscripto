@@ -4,10 +4,12 @@ import SubscriptionList from "./components/Subscription/SubscriptionList";
 import SubscriptionFormDialog from "./components/SubscriptionForm/SubscriptionFormDialog";
 import TreeMapRoot from "./components/TreeMap/TreeMapRoot";
 import { Button } from "./components/ui/button";
+import { useSubscriptionStore } from "./store/subscriptionStore";
 
 // Github profile link: https://github.com/clarencetinator7
 
 function App() {
+  const subscriptions = useSubscriptionStore((state) => state.subscriptions);
   return (
     <div className="max-w-2xl mx-auto">
       <header className="flex w-full items-center justify-between">
@@ -27,7 +29,7 @@ function App() {
           </Button>
         </div>
       </header>
-      <TreeMapRoot />
+      {subscriptions.length > 0 && <TreeMapRoot />}
       <SubscriptionFormDialog isEditMode={false} />
       <SubscriptionList />
     </div>
