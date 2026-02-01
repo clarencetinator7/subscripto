@@ -25,7 +25,7 @@ const TreeMapTile = (props: Props) => {
     // Minimal layout: just icon and percent
     return (
       <div
-        className="p-2 flex items-center justify-center absolute bg-blue-200 shadow rounded-xl"
+        className="p-2 flex items-center justify-center absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
         style={{
           left: props.node.x,
           top: props.node.y,
@@ -54,7 +54,7 @@ const TreeMapTile = (props: Props) => {
     // Small layout: icon, percent, and name
     return (
       <div
-        className="p-3 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between"
+        className="p-3 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-103 hover:shadow-lg transition-transform"
         style={{
           left: props.node.x,
           top: props.node.y,
@@ -93,7 +93,7 @@ const TreeMapTile = (props: Props) => {
   // Default layout: full information
   return (
     <div
-      className="p-4 flex flex-row absolute bg-blue-200 shadow rounded-xl"
+      className="p-4 flex flex-row absolute bg-blue-200 shadow rounded-xl hover:scale-102 hover:shadow-lg transition-transform"
       style={{
         left: props.node.x,
         top: props.node.y,
