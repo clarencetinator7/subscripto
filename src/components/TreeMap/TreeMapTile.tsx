@@ -1,6 +1,7 @@
 import { DEFAULT_UNIT } from "@/const/constants";
 import type { SubscriptionNode } from "@/utils/d3TreeMap";
 import { Badge } from "../ui/badge";
+import { formatCurrency } from "@/lib/utils";
 
 type Props = {
   node: {
@@ -15,14 +16,14 @@ type Props = {
 
 const TreeMapTile = (props: Props) => {
   const { width, height } = props.node;
-  const minDimension = Math.min(width, height);
 
-  // Determine layout type based on tile size
-  const isCompact = minDimension < 100;
-  const isSmall = minDimension < 140;
+  // Determine tile size categories
+  const isBigWidth = width >= 140;
+  const isSmallWidth = width < 125;
+  const isSmallHeight = height < 125;
 
-  if (isCompact) {
-    // Minimal layout: just icon and percent
+  // Small Height - Small Width: Icon and percent only
+  if (isSmallHeight && isSmallWidth) {
     return (
       <div
         className="p-2 flex items-center justify-center absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
@@ -35,7 +36,7 @@ const TreeMapTile = (props: Props) => {
         }}
       >
         <div className="flex flex-row justify-center items-center flex-wrap gap-1">
-          <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
+          <div className="w-6 h-6 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
             <img
               src={props.node.data.VisualIdentifier}
               alt={props.node.data.Name}
@@ -43,18 +44,18 @@ const TreeMapTile = (props: Props) => {
             />
           </div>
           <Badge variant="default" className="bg-white text-black text-xs">
-            {props.node.data.MonthlyRatio.toFixed(1)}%
+            {props.node.data.MonthlyRatio.toFixed(0)}%
           </Badge>
         </div>
       </div>
     );
   }
 
-  if (isSmall) {
-    // Small layout: icon, percent, and name
+  // Big Height - Small Width: Vertical stacked layout
+  if (!isSmallHeight && isSmallWidth) {
     return (
       <div
-        className="p-3 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-103 hover:shadow-lg transition-transform"
+        className="p-2 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-105 hover:shadow-lg transition-transform"
         style={{
           left: props.node.x,
           top: props.node.y,
@@ -63,37 +64,69 @@ const TreeMapTile = (props: Props) => {
           backgroundColor: props.node.color,
         }}
       >
-        <div className="flex flex-col justify-between h-full">
-          <div className="flex flex-row justify-between items-start gap-2">
-            <div className="w-10 h-10 p-1 flex items-center justify-center overflow-clip rounded-lg shrink-0">
-              <img
-                src={props.node.data.VisualIdentifier}
-                alt={props.node.data.Name}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <Badge
-              variant="default"
-              className="bg-white text-black text-xs shrink-0"
-            >
-              {props.node.data.MonthlyRatio.toFixed(1)}%
-            </Badge>
+        <div className="flex flex-col items-center justify-center">
+          <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
+            <img
+              src={props.node.data.VisualIdentifier}
+              alt={props.node.data.Name}
+              className="w-full h-full object-contain"
+            />
           </div>
-          <div className="flex">
-            <p className="text-sm font-semibold truncate">
-              {DEFAULT_UNIT.Symbol}
-              {props.node.data.YearlyCost} / yearly
-            </p>
-          </div>
+          <Badge variant="default" className="bg-white text-black text-xs mt-1">
+            {props.node.data.MonthlyRatio.toFixed(1)}%
+          </Badge>
+        </div>
+        <div className="flex flex-col items-center gap-0">
+          <p className="text-xs text-black/60 truncate text-center">
+            {props.node.data.Name}
+          </p>
         </div>
       </div>
     );
   }
 
-  // Default layout: full information
+  // Small Height - Big Width: Horizontal compact layout
+  if (isSmallHeight && isBigWidth) {
+    return (
+      <div
+        className="p-3 flex flex-col items-start justify-between absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
+        style={{
+          left: props.node.x,
+          top: props.node.y,
+          width: props.node.width,
+          height: props.node.height,
+          backgroundColor: props.node.color,
+        }}
+      >
+        <div className="flex items-start justify-between w-full flex-1">
+          <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg shrink-0">
+            <img
+              src={props.node.data.VisualIdentifier}
+              alt={props.node.data.Name}
+              className="w-full h-full object-contain"
+            />
+          </div>
+          <Badge
+            variant="default"
+            className="bg-white text-black text-xs shrink-0 ml-2"
+          >
+            {props.node.data.MonthlyRatio.toFixed(1)}%
+          </Badge>
+        </div>
+        <div className="flex flex-col items-start gap-0 mt-2">
+          <p className="font-semibold truncate">
+            {formatCurrency(props.node.data.YearlyCost, DEFAULT_UNIT.Symbol)} /
+            year
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Big Height - Big Width: Full information layout
   return (
     <div
-      className="p-4 flex flex-row absolute bg-blue-200 shadow rounded-xl hover:scale-102 hover:shadow-lg transition-transform"
+      className="p-4 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-102 hover:shadow-lg transition-transform"
       style={{
         left: props.node.x,
         top: props.node.y,
@@ -102,30 +135,35 @@ const TreeMapTile = (props: Props) => {
         backgroundColor: props.node.color,
       }}
     >
-      <div className="flex flex-col w-full justify-between overflow-hidden">
+      <div className="flex flex-col w-full justify-between overflow-hidden flex-1">
         {/* IMG CONTAINER */}
-        <div className="flex flex-row justify-between w-full">
-          <div className="w-12 h-12 p-1 flex items-center justify-center overflow-clip rounded-lg">
+        <div className="flex flex-row justify-between w-full items-start">
+          <div className="w-12 h-12 p-1 flex items-center justify-center overflow-clip rounded-lg shrink-0">
             <img
               src={props.node.data.VisualIdentifier}
               alt={props.node.data.Name}
               className="w-full h-full object-contain"
             />
           </div>
-          <div className="p-1 text-sm font-semibold rounded-full">
-            {/* PERCENT */}
-            <Badge variant="default" className="bg-white text-black">
-              {props.node.data.MonthlyRatio.toFixed(2)}%
-            </Badge>
-          </div>
+          <Badge
+            variant="default"
+            className="bg-white text-black text-sm shrink-0"
+          >
+            {props.node.data.MonthlyRatio.toFixed(2)}%
+          </Badge>
         </div>
-        <div className="flex flex-col items-start gap-0">
+        {/* INFO CONTAINER */}
+        <div className="flex flex-col items-start gap-0 mt-2">
           <p className="text-sm text-black/50 truncate">
             {props.node.data.Name}
           </p>
           <p className="font-bold truncate">
-            {DEFAULT_UNIT.Symbol}
-            {props.node.data.YearlyCost} / yearly
+            {formatCurrency(props.node.data.YearlyCost, DEFAULT_UNIT.Symbol)} /
+            year
+          </p>
+          <p className="text-xs text-gray-500 truncate">
+            {formatCurrency(props.node.data.MonthlyCost, DEFAULT_UNIT.Symbol)} /
+            mnth
           </p>
         </div>
       </div>

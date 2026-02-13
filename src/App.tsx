@@ -19,7 +19,7 @@ function App() {
         <div className="">
           <Button
             variant="link"
-            className="flex flex-row gap-1"
+            className="flex flex-row gap-1 cursor-pointer"
             onClick={() =>
               window.open("https://github.com/clarencetinator7", "_blank")
             }

@@ -23,7 +23,7 @@ export const computeTreemapData = (
     })),
   }).sum((d: any) => d.value);
 
-  const layout = treemap<TreeNode>().size([width, height]).padding(7)(root);
+  const layout = treemap<TreeNode>().size([width, height]).padding(10)(root);
   return layout.leaves().map((node) => ({
     x: node.x0,
     y: node.y0,
