@@ -3,6 +3,7 @@ import { computeTreemapData } from "@/utils/d3TreeMap";
 import { buildSubscriptionData } from "@/utils/subscriptionSelector";
 import { useEffect, useRef, useState } from "react";
 import TreeMapTile from "./TreeMapTile";
+import SubscriptionStats from "../SubscriptionStats/SubscriptionStats";
 
 const MAX_WIDTH = 671;
 const MIN_WIDTH = 500;
@@ -18,9 +19,6 @@ const TreeMapRoot = () => {
     containerWidth,
     HEIGHT,
   );
-
-  console.log(subscriptionStats);
-  console.log(treeMapNodes);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -41,6 +39,10 @@ const TreeMapRoot = () => {
       className="w-full overflow-x-auto bg-white rounded-2xl p-4 shadow mb-5"
       ref={containerRef}
     >
+      <SubscriptionStats
+        totalMonthlyCost={subscriptionStats.TotalMonthlyCost}
+        totalYearlyCost={subscriptionStats.TotalYearlyCost}
+      />
       <div
         className="relative"
         style={{
