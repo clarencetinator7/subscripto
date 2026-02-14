@@ -1,7 +1,12 @@
-import { DEFAULT_UNIT } from "@/const/constants";
+import {
+  SMALL_HEIGHT_THRESHOLD,
+  SMALL_WIDTH_THRESHOLD,
+} from "@/const/constants";
 import type { SubscriptionNode } from "@/utils/d3TreeMap";
-import { Badge } from "../ui/badge";
-import { formatCurrency } from "@/lib/utils";
+import TreeMapTileSmallSmall from "./TreeMapTileSmallSmall";
+import TreeMapTileTallNarrow from "./TreeMapTileTallNarrow";
+import TreeMapTileSmallWide from "./TreeMapTileSmallWide";
+import TreeMapTileFull from "./TreeMapTileFull";
 
 type Props = {
   node: {
@@ -14,10 +19,6 @@ type Props = {
   };
 };
 
-const SMALL_WIDTH_THRESHOLD = 140;
-const SMALL_HEIGHT_THRESHOLD = 145;
-const VERY_SMALL_HEIGHT_THRESHOLD = 100;
-
 const TreeMapTile = (props: Props) => {
   const { width, height } = props.node;
 
@@ -28,145 +29,21 @@ const TreeMapTile = (props: Props) => {
 
   // Small Height - Small Width: Icon and percent only
   if (isSmallHeight && isSmallWidth) {
-    return (
-      <div
-        className="p-2 flex items-center justify-center absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
-        style={{
-          left: props.node.x,
-          top: props.node.y,
-          width: props.node.width,
-          height: props.node.height,
-          backgroundColor: props.node.color,
-        }}
-      >
-        <div className="flex flex-row justify-center items-center flex-wrap gap-1">
-          <div className="w-6 h-6 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
-            <img
-              src={props.node.data.VisualIdentifier}
-              alt={props.node.data.Name}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <Badge variant="default" className="bg-white text-black text-xs">
-            {props.node.data.MonthlyRatio.toFixed(0)}%
-          </Badge>
-        </div>
-      </div>
-    );
+    return <TreeMapTileSmallSmall node={props.node} />;
   }
 
   // Big Height - Small Width: Vertical stacked layout
   if (!isSmallHeight && isSmallWidth) {
-    return (
-      <div
-        className="p-2 flex flex-col items-center justify-center absolute bg-blue-200 shadow rounded-xl  hover:scale-105 hover:shadow-lg transition-transform"
-        style={{
-          left: props.node.x,
-          top: props.node.y,
-          width: props.node.width,
-          height: props.node.height,
-          backgroundColor: props.node.color,
-        }}
-      >
-        <div className="flex flex-col flex-wrap items-center justify-center">
-          <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
-            <img
-              src={props.node.data.VisualIdentifier}
-              alt={props.node.data.Name}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <Badge variant="default" className="bg-white text-black text-xs mt-1">
-            {props.node.data.MonthlyRatio.toFixed(1)}%
-          </Badge>
-        </div>
-      </div>
-    );
+    return <TreeMapTileTallNarrow node={props.node} />;
   }
 
   // Small Height - Big Width: Horizontal compact layout
   if (isSmallHeight && isBigWidth) {
-    return (
-      <div
-        className="p-3 flex flex-col items-center justify-between absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
-        style={{
-          left: props.node.x,
-          top: props.node.y,
-          width: props.node.width,
-          height: props.node.height,
-          backgroundColor: props.node.color,
-        }}
-      >
-        <div className="flex flex-col items-center justify-center w-full flex-1 gap-1">
-          <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg shrink-0">
-            <img
-              src={props.node.data.VisualIdentifier}
-              alt={props.node.data.Name}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <Badge
-            variant="default"
-            className="bg-white text-black text-xs shrink-0"
-          >
-            {props.node.data.MonthlyRatio.toFixed(1)}%
-          </Badge>
-          {props.node.height > VERY_SMALL_HEIGHT_THRESHOLD && (
-            <p className="text-xs text-black/60 truncate text-center">
-              {props.node.data.Name}
-            </p>
-          )}
-        </div>
-      </div>
-    );
+    return <TreeMapTileSmallWide node={props.node} />;
   }
 
   // Big Height - Big Width: Full information layout
-  return (
-    <div
-      className="p-4 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-102 hover:shadow-lg transition-transform"
-      style={{
-        left: props.node.x,
-        top: props.node.y,
-        width: props.node.width,
-        height: props.node.height,
-        backgroundColor: props.node.color,
-      }}
-    >
-      <div className="flex flex-col w-full justify-between overflow-hidden flex-1">
-        {/* IMG CONTAINER */}
-        <div className="flex flex-row justify-between w-full items-start">
-          <div className="w-12 h-12 p-1 flex items-center justify-center overflow-clip rounded-lg shrink-0">
-            <img
-              src={props.node.data.VisualIdentifier}
-              alt={props.node.data.Name}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <Badge
-            variant="default"
-            className="bg-white text-black text-sm shrink-0"
-          >
-            {props.node.data.MonthlyRatio.toFixed(2)}%
-          </Badge>
-        </div>
-        {/* INFO CONTAINER */}
-        <div className="flex flex-col items-start gap-0 mt-2">
-          <p className="text-sm text-black/50 truncate">
-            {props.node.data.Name}
-          </p>
-          <p className="font-bold truncate">
-            {formatCurrency(props.node.data.YearlyCost, DEFAULT_UNIT.Symbol)} /
-            year
-          </p>
-          <p className="text-xs text-gray-500 truncate">
-            {formatCurrency(props.node.data.MonthlyCost, DEFAULT_UNIT.Symbol)} /
-            mnth
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  return <TreeMapTileFull node={props.node} />;
 };
 
 export default TreeMapTile;
