@@ -17,3 +17,7 @@ export const TILE_COLORS = [
   "#e8daf0",
   "#cbe6ff",
 ];
+
+export const SMALL_WIDTH_THRESHOLD = 140;
+export const SMALL_HEIGHT_THRESHOLD = 145;
+export const VERY_SMALL_HEIGHT_THRESHOLD = 100;

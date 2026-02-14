@@ -11,6 +11,7 @@ type SubscriptionStore = {
     updatedSubscription: Partial<Subscription>,
   ) => void;
   deleteSubscription: (id: string) => void;
+  clearAllSubscriptions: () => void;
 };
 
 export const useSubscriptionStore = create<SubscriptionStore>()(
@@ -50,6 +51,11 @@ export const useSubscriptionStore = create<SubscriptionStore>()(
           subscriptions: state.subscriptions.filter(
             (subscription) => subscription.Id !== id,
           ),
+        }));
+      },
+      clearAllSubscriptions: () => {
+        set(() => ({
+          subscriptions: [],
         }));
       },
     }),
