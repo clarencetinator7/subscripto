@@ -1,4 +1,3 @@
-import { FaGithub } from "react-icons/fa";
 import { LuTrash2 } from "react-icons/lu";
 import "./App.css";
 import SubscriptionList from "./components/Subscription/SubscriptionList";
@@ -7,6 +6,7 @@ import TreeMapRoot from "./components/TreeMap/TreeMapRoot";
 import { Button } from "./components/ui/button";
 import { useSubscriptionStore } from "./store/subscriptionStore";
 import EmptyState from "./components/EmptyState/EmptyState";
+import Header from "./components/Header/Header";
 
 // Github profile link: https://github.com/clarencetinator7
 
@@ -19,23 +19,7 @@ function App() {
   return (
     <>
       <div className="max-w-2xl mx-auto relative">
-        <header className="flex w-full items-center justify-between">
-          <h1 className="text-3xl font-extrabold mb-5 text-primary">
-            Subscripto
-          </h1>
-          <div className="">
-            <Button
-              variant="link"
-              className="flex flex-row gap-1 cursor-pointer"
-              onClick={() =>
-                window.open("https://github.com/clarencetinator7", "_blank")
-              }
-            >
-              <FaGithub className="text-lg" />
-              clarencetinator7
-            </Button>
-          </div>
-        </header>
+        <Header />
         {subscriptions.length === 0 && <EmptyState />}
         {subscriptions.length > 0 && <TreeMapRoot />}
         <SubscriptionFormDialog isEditMode={false} />
