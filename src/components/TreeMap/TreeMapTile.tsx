@@ -14,13 +14,17 @@ type Props = {
   };
 };
 
+const SMALL_WIDTH_THRESHOLD = 140;
+const SMALL_HEIGHT_THRESHOLD = 145;
+const VERY_SMALL_HEIGHT_THRESHOLD = 100;
+
 const TreeMapTile = (props: Props) => {
   const { width, height } = props.node;
 
   // Determine tile size categories
-  const isBigWidth = width >= 140;
-  const isSmallWidth = width < 125;
-  const isSmallHeight = height < 125;
+  const isBigWidth = width >= SMALL_WIDTH_THRESHOLD;
+  const isSmallWidth = width < SMALL_WIDTH_THRESHOLD;
+  const isSmallHeight = height < SMALL_HEIGHT_THRESHOLD;
 
   // Small Height - Small Width: Icon and percent only
   if (isSmallHeight && isSmallWidth) {
@@ -55,7 +59,7 @@ const TreeMapTile = (props: Props) => {
   if (!isSmallHeight && isSmallWidth) {
     return (
       <div
-        className="p-2 flex flex-col absolute bg-blue-200 shadow rounded-xl justify-between hover:scale-105 hover:shadow-lg transition-transform"
+        className="p-2 flex flex-col items-center justify-center absolute bg-blue-200 shadow rounded-xl  hover:scale-105 hover:shadow-lg transition-transform"
         style={{
           left: props.node.x,
           top: props.node.y,
@@ -64,7 +68,7 @@ const TreeMapTile = (props: Props) => {
           backgroundColor: props.node.color,
         }}
       >
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col flex-wrap items-center justify-center">
           <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg">
             <img
               src={props.node.data.VisualIdentifier}
@@ -76,11 +80,6 @@ const TreeMapTile = (props: Props) => {
             {props.node.data.MonthlyRatio.toFixed(1)}%
           </Badge>
         </div>
-        <div className="flex flex-col items-center gap-0">
-          <p className="text-xs text-black/60 truncate text-center">
-            {props.node.data.Name}
-          </p>
-        </div>
       </div>
     );
   }
@@ -89,7 +88,7 @@ const TreeMapTile = (props: Props) => {
   if (isSmallHeight && isBigWidth) {
     return (
       <div
-        className="p-3 flex flex-col items-start justify-between absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
+        className="p-3 flex flex-col items-center justify-between absolute bg-blue-200 shadow rounded-xl hover:scale-105 hover:shadow-lg transition-transform"
         style={{
           left: props.node.x,
           top: props.node.y,
@@ -98,7 +97,7 @@ const TreeMapTile = (props: Props) => {
           backgroundColor: props.node.color,
         }}
       >
-        <div className="flex items-start justify-between w-full flex-1">
+        <div className="flex flex-col items-center justify-center w-full flex-1 gap-1">
           <div className="w-8 h-8 p-0.5 flex items-center justify-center overflow-clip rounded-lg shrink-0">
             <img
               src={props.node.data.VisualIdentifier}
@@ -108,16 +107,15 @@ const TreeMapTile = (props: Props) => {
           </div>
           <Badge
             variant="default"
-            className="bg-white text-black text-xs shrink-0 ml-2"
+            className="bg-white text-black text-xs shrink-0"
           >
             {props.node.data.MonthlyRatio.toFixed(1)}%
           </Badge>
-        </div>
-        <div className="flex flex-col items-start gap-0 mt-2">
-          <p className="font-semibold truncate">
-            {formatCurrency(props.node.data.YearlyCost, DEFAULT_UNIT.Symbol)} /
-            year
-          </p>
+          {props.node.height > VERY_SMALL_HEIGHT_THRESHOLD && (
+            <p className="text-xs text-black/60 truncate text-center">
+              {props.node.data.Name}
+            </p>
+          )}
         </div>
       </div>
     );
